@@ -1,20 +1,14 @@
 <template>
-  
-    <HelloWorld/>
-  
+    <MortgageForm/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import MortgageForm from './components/MortgageForm'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    MortgageForm
   }
 }
 </script>
-
-<style>
-
-</style>

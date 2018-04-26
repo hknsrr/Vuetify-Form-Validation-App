@@ -42,7 +42,7 @@
           label="House Value"
           v-model="house"
           :rules="amountRules"
-          mask="#.###.###"
+          mask="#### ###"
           type="tel"
           suffix="TL"
           required
@@ -53,15 +53,18 @@
           label="Loan Amount"
           v-model="loan"
           :rules="amountRules"
-          mask="#.###.###"
+          mask="#### ###"
           type="tel"
           suffix="TL"
           required
         ></v-text-field>
       </v-flex>
     </v-layout>
+            <v-alert type="warning" :value="!calcLoanAmount">
+          The loan amount should be less than %75 of the value of the house.
+        </v-alert>
     <v-layout row>
-      <v-flex xs12>
+      <v-flex xs12 maturity>
            <label>Maturity (Months)*</label>
            <v-badge color="blue">
             <span slot="badge">{{maturity}}</span>
@@ -91,15 +94,16 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "MortgageForm",
   data: () => ({
     valid: true,
     name: "",
     lastname: "",
     tckn: "",
-    house: 1000,
-    loan: 1000,
+    house: 2000,
+    loan: 1500,
     maturity: 12,
+    url: "",
     nameRules: [
       v => !!v || "This is required",
       v => (v && v.length <= 10) || "This must be less than 10 characters",
@@ -113,28 +117,27 @@ export default {
     ],
     amountRules: [
       v => !!v || "This is required",
-      v =>
-        (v && v[0] != 0 && v >= 1000 && v <= 1000000) ||
-        "This must be between 1.000 TL and 1.000.000 TL",
+      v => (v && v[0] != 0 && v >= 1000 && v <= 1000000) || "This must be between 1.000 TL and 1.000.000 TL",
       v => (/\d/.test(v) && !isNaN(v)) || "Allows only numbers not letters"
     ]
   }),
+  computed: {
+    calcLoanAmount(){
+      return this.loan <= this.house * 75 / 100 ? true : false
+    }
+  },
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        // Native form submission is not yet supported
-        // axios.post("/api/submit", {
-        //   name: this.name,
-        //   email: this.email,
-        //   select: this.select,
-        //   checkbox: this.checkbox
-        // });
+        // www.hesapkurdu.com/konut-kredisi?r=[value-of-house]&l=[loanamount]&m=[maturity]&n=[name]&s=[last name] &t=[tckn]
+        this.url = "https://www.hesapkurdu.com/konut-kredisi?r="+this.house+"&l="+this.loan+"&m="+this.maturity+"&n="+this.name+"&s="+this.lastname+"&t="+this.tckn;
+        window.open(this.url, '_blank');
       }
     },
     clear() {
       this.$refs.form.reset();
       this.house = 1000;
-      this.loan = 1000;
+      this.loan = 750;
       this.maturity = 12;
     }
   }
