@@ -5,6 +5,7 @@ import App from './App'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import './stylus/main.styl'
+import 'babel-polyfill'
  
 Vue.use(Vuetify)
 
