@@ -159,8 +159,8 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
-      this.house = 1000;
-      this.loan = 750;
+      this.house = 2000;
+      this.loan = 1500;
       this.maturity = 12;
     }
   }
