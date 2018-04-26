@@ -4,86 +4,102 @@
       <v-form v-model="valid" ref="form" lazy-validation>
         <v-container fluid grid-list-xs>
           <v-layout row>
-            <v-flex xs6>
-              <v-text-field
-                label="Name"
-                v-model="name"
-                :rules="nameRules"
-                :counter="10"
-                required
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field
-                label="Last Name"
-                v-model="lastname"
-                :rules="nameRules"
-                :counter="10"
-                required
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
-          <v-layout row>
             <v-flex xs12>
-              <v-text-field
-                label="TCKN"
-                v-model="tckn"
-                :rules="tcknRules"
-                :counter="11"
-                mask="###########"
-                type="tel"
-                required
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
-          <v-layout row>
-            <v-flex xs6>
-              <v-text-field
-                label="House Value"
-                v-model="house"
-                :rules="amountRules"
-                mask="#### ###"
-                type="tel"
-                suffix="TL"
-                required
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field
-                label="Loan Amount"
-                v-model="loan"
-                :rules="amountRules"
-                mask="#### ###"
-                type="tel"
-                suffix="TL"
-                required
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
+               <v-card class="card--flex-toolbar">
+                <v-toolbar card prominent>
+                  <v-toolbar-title class="body-2 grey--text">Hesap Kurdu</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                  <v-btn icon href="https://www.hesapkurdu.com/" target="_blank">
+                    <v-icon>home</v-icon>
+                  </v-btn>
+                </v-toolbar>
+                <v-divider></v-divider>
+                <v-card-text>
+                  <v-layout row>
+                    <v-flex xs6>
+                      <v-text-field
+                        label="Name"
+                        v-model="name"
+                        :rules="nameRules"
+                        :counter="10"
+                        required
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs6>
+                      <v-text-field
+                        label="Last Name"
+                        v-model="lastname"
+                        :rules="nameRules"
+                        :counter="10"
+                        required
+                      ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row>
+                    <v-flex xs12>
+                      <v-text-field
+                        label="TCKN"
+                        v-model="tckn"
+                        :rules="tcknRules"
+                        :counter="11"
+                        mask="###########"
+                        type="tel"
+                        required
+                      ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row>
+                    <v-flex xs6>
+                      <v-text-field
+                        label="House Value"
+                        v-model="house"
+                        :rules="amountRules"
+                        mask="#### ###"
+                        type="tel"
+                        suffix="TL"
+                        required
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs6>
+                      <v-text-field
+                        label="Loan Amount"
+                        v-model="loan"
+                        :rules="amountRules"
+                        mask="#### ###"
+                        type="tel"
+                        suffix="TL"
+                        required
+                      ></v-text-field>
+                    </v-flex>
+                  </v-layout>
                   <v-alert type="warning" :value="!calcLoanAmount">
-                The loan amount should be less than %75 of the value of the house.
-              </v-alert>
-          <v-layout row>
-            <v-flex xs12 maturity>
-                <label>Maturity (Months)*</label>
-                <v-badge color="blue">
-                  <span slot="badge">{{maturity}}</span>
-                  <v-icon medium color="grey">alarm</v-icon>
-                </v-badge>
-              <v-slider v-model="maturity" thumb-label step="2" min="12" max="120" ticks></v-slider>
-            </v-flex>
-          </v-layout>
-          <v-layout row justify-center>
-            <v-flex xs3>
-              <v-btn
-                @click="submit"
-                :disabled="!valid"
-              >
-              Search
-              </v-btn>
-            </v-flex>
-            <v-flex xs3>
-              <v-btn @click="clear">clear</v-btn>
+                    The loan amount should be less than %75 of the value of the house.
+                  </v-alert>
+                  <v-layout row>
+                    <v-flex xs12 maturity>
+                        <label>Maturity (Months)*</label>
+                        <v-badge color="blue">
+                          <span slot="badge">{{maturity}}</span>
+                          <v-icon medium color="grey">alarm</v-icon>
+                        </v-badge>
+                      <v-slider v-model="maturity" thumb-label step="2" min="12" max="120" ticks></v-slider>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row justify-center>
+                    <v-flex xs3>
+                      <v-btn
+                        @click="submit"
+                        :disabled="!valid"
+                      >
+                      Search
+                      </v-btn>
+                    </v-flex>
+                    <v-flex xs3>
+                      <v-btn @click="clear">clear</v-btn>
+                    </v-flex>
+                  </v-layout>
+                </v-card-text>
+              </v-card>
             </v-flex>
           </v-layout>
         </v-container>
@@ -134,7 +150,7 @@ export default {
       var closest = this.possibleValues.reduce(function(prev, curr) {
         return Math.abs(curr - val) < Math.abs(prev - val) ? curr : prev;
       });
-      this.maturity = closest;  
+      this.maturity = closest;
     }
   },
   methods: {
