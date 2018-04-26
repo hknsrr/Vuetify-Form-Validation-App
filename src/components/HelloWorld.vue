@@ -2,69 +2,123 @@
 <div id="mortgage-form">
 <v-app>
   <v-form v-model="valid" ref="form" lazy-validation>
-    <v-text-field
-      label="Name"
-      v-model="name"
-      :rules="nameRules"
-      :counter="10"
-      required
-    ></v-text-field>
-    <v-text-field
-      label="E-mail"
-      v-model="email"
-      :rules="emailRules"
-      required
-    ></v-text-field>
-    <v-select
-      label="Item"
-      v-model="select"
-      :items="items"
-      :rules="[v => !!v || 'Item is required']"
-      required
-    ></v-select>
-    <v-checkbox
-      label="Do you agree?"
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      required
-    ></v-checkbox>
-
-    <v-btn
-      @click="submit"
-      :disabled="!valid"
-    >
-      submit
-    </v-btn>
-    <v-btn @click="clear">clear</v-btn>
+  <v-container fluid grid-list-xs>
+    <v-layout row>
+      <v-flex xs6>
+        <v-text-field
+          label="Name"
+          v-model="name"
+          :rules="nameRules"
+          :counter="10"
+          required
+        ></v-text-field>
+      </v-flex>
+      <v-flex xs6>
+        <v-text-field
+          label="Last Name"
+          v-model="lastname"
+          :rules="nameRules"
+          :counter="10"
+          required
+        ></v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12>
+        <v-text-field
+          label="TCKN"
+          v-model="tckn"
+          :rules="tcknRules"
+          :counter="11"
+          mask="###########"
+          type="tel"
+          required
+        ></v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs6>
+        <v-text-field
+          label="House Value"
+          v-model="house"
+          :rules="amountRules"
+          mask="#.###.###"
+          type="tel"
+          suffix="TL"
+          required
+        ></v-text-field>
+      </v-flex>
+      <v-flex xs6>
+        <v-text-field
+          label="Loan Amount"
+          v-model="loan"
+          :rules="amountRules"
+          mask="#.###.###"
+          type="tel"
+          suffix="TL"
+          required
+        ></v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12>
+           <label>Maturity (Months)*</label>
+           <v-badge color="blue">
+            <span slot="badge">{{maturity}}</span>
+            <v-icon medium color="grey">alarm</v-icon>
+          </v-badge>
+        <v-slider v-model="maturity" thumb-label step="12" min="12" max="120" ticks></v-slider>
+      </v-flex>
+    </v-layout>
+    <v-layout row justify-center>
+      <v-flex xs3>
+        <v-btn
+          @click="submit"
+          :disabled="!valid"
+        >
+        Search
+        </v-btn>
+      </v-flex>
+      <v-flex xs3>
+        <v-btn @click="clear">clear</v-btn>
+      </v-flex>
+    </v-layout>
+  </v-container>
   </v-form>
   </v-app>
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: "HelloWorld",
   data: () => ({
     valid: true,
     name: "",
+    lastname: "",
+    tckn: "",
+    house: 1000,
+    loan: 1000,
+    maturity: 12,
     nameRules: [
-      v => !!v || "Name is required",
-      v => (v && v.length <= 10) || "Name must be less than 10 characters"
+      v => !!v || "This is required",
+      v => (v && v.length <= 10) || "This must be less than 10 characters",
+      v => (v && v.length >= 2) || "This must be more than 2 characters",
+      v => !/\d/.test(v) || "Allows only letters not numbers"
     ],
-    email: "",
-    emailRules: [
-      v => !!v || "E-mail is required",
+    tcknRules: [
+      v => !!v || "TCKN is required",
+      v => !(v && v.length < 11) || "TCKN must be 11 characters",
+      v => (/\d/.test(v) && !isNaN(v)) || "Allows only numbers not letters"
+    ],
+    amountRules: [
+      v => !!v || "This is required",
       v =>
-        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-        "E-mail must be valid"
-    ],
-    select: null,
-    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
-    checkbox: false
+        (v && v[0] != 0 && v >= 1000 && v <= 1000000) ||
+        "This must be between 1.000 TL and 1.000.000 TL",
+      v => (/\d/.test(v) && !isNaN(v)) || "Allows only numbers not letters"
+    ]
   }),
-
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
@@ -79,6 +133,9 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
+      this.house = 1000;
+      this.loan = 1000;
+      this.maturity = 12;
     }
   }
 };
