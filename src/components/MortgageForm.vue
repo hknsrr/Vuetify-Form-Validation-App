@@ -86,7 +86,7 @@
                     </v-flex>
                   </v-layout>
                   <v-layout row justify-center>
-                    <v-flex xs3>
+                    <v-flex xs5>
                       <v-btn
                         @click="submit"
                         :disabled="!valid"
